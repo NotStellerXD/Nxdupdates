@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YT Updates - NotStellerXD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --ink: #1a2340;
+    --muted: #6b7a99;
+    --accent: #1b3a6b;
+    --accent-hover: #142d54;
+    --border: #d4d9e5;
+    --new-badge: #1b5ea8;
+    --navy: #1b3a6b;
+    --grey-mid: #e4e7ee;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ══ HEADER ══ */
+  header {
+    background: var(--navy);
+    border-bottom: 2px solid #142d54;
+    position: sticky; top: 0; z-index: 200;
+  }
+  .header-inner {
+    max-width: 960px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; height: 58px; gap: 0;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-right: 28px; text-decoration: none; flex-shrink: 0;
+  }
+  .logo-icon {
+    width: 30px; height: 30px; background: rgba(255,255,255,0.14);
+    border-radius: 7px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.22);
+  }
+  .logo-icon svg { width: 14px; height: 14px; fill: #fff; }
+  .logo-text { font-family: 'DM Serif Display', serif; font-size: 18px; color: #fff; letter-spacing: -0.2px; }
+
+  nav { display: flex; align-items: center; gap: 2px; flex: 1; }
+  .nav-btn {
+    background: none; border: none; color: rgba(255,255,255,0.60);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    padding: 7px 15px; border-radius: 7px; cursor: pointer;
+    transition: background 0.15s, color 0.15s; white-space: nowrap;
+  }
+  .nav-btn:hover  { background: rgba(255,255,255,0.10); color: #fff; }
+  .nav-btn.active { background: rgba(255,255,255,0.18); color: #fff; font-weight: 600; }
+
+  .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .sub-count { font-size: 12px; color: rgba(255,255,255,0.52); }
+  .btn-logout {
+    background: rgba(255,255,255,0.11); border: 1px solid rgba(255,255,255,0.20);
+    color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    padding: 6px 13px; border-radius: 7px; cursor: pointer; transition: background 0.15s; display: none;
+  }
+  .btn-logout:hover { background: rgba(255,255,255,0.22); }
+
+  /* ══ PAGES ══ */
+  .page { display: none; flex: 1; }
+  .page.active { display: block; }
+
+  /* ══ LOGIN ══ */
+  .login-wrap {
+    min-height: calc(100vh - 58px); display: flex;
+    align-items: center; justify-content: center; padding: 40px 24px;
+  }
+  .login-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 42px 38px; width: 100%; max-width: 400px;
+    box-shadow: 0 4px 24px rgba(27,58,107,0.09);
+  }
+  .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 26px; }
+  .login-logo-icon {
+    width: 34px; height: 34px; background: var(--navy); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .login-logo-icon svg { width: 16px; height: 16px; fill: #fff; }
+  .login-logo span { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--ink); }
+  .login-card h2 { font-family: 'DM Serif Display', serif; font-size: 25px; margin-bottom: 6px; }
+  .login-card > p { font-size: 14px; color: var(--muted); margin-bottom: 26px; line-height: 1.5; }
+
+  .login-tabs {
+    display: flex; background: var(--grey-mid); border-radius: 9px;
+    padding: 4px; margin-bottom: 22px; gap: 4px;
+  }
+  .login-tab {
+    flex: 1; background: none; border: none; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; color: var(--muted); padding: 8px;
+    border-radius: 7px; cursor: pointer; transition: all 0.15s;
+  }
+  .login-tab.active {
+    background: var(--surface); color: var(--ink);
+    font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+  }
+  .login-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 13px; }
+  .login-field label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.4px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .login-field input {
+    padding: 11px 13px; border: 1.5px solid var(--border); border-radius: 9px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--bg);
+    color: var(--ink); outline: none; transition: border-color 0.2s;
+  }
+  .login-field input:focus { border-color: var(--navy); }
+  .login-field input::placeholder { color: var(--muted); }
+  .btn-login {
+    width: 100%; padding: 12px; background: var(--navy); color: #fff;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    border: none; border-radius: 10px; cursor: pointer; margin-top: 5px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-login:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-login:active { transform: translateY(0); }
+
+  .subscribe-section { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border); }
+  .subscribe-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 11px; }
+  .sub-row { display: flex; gap: 8px; }
+  .sub-row input {
+    flex: 1; padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 9px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--bg);
+    color: var(--ink); outline: none; transition: border-color 0.2s;
+  }
+  .sub-row input:focus { border-color: var(--navy); }
+  .sub-row input::placeholder { color: var(--muted); }
+  .btn-sub {
+    padding: 10px 15px; background: var(--navy); color: #fff;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    border: none; border-radius: 9px; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+  }
+  .btn-sub:hover { background: var(--accent-hover); }
+
+  /* ══ SHARED CONTENT PAGES ══ */
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 34px 24px 80px; }
+  .page-header {
+    margin-bottom: 26px; display: flex; align-items: flex-end;
+    justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .page-header h2 { font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -0.3px; }
+  .page-header p  { font-size: 14px; color: var(--muted); margin-top: 3px; }
+  .btn-admin {
+    background: none; border: 1.5px solid var(--border); color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 16px;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .btn-admin:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* Admin panel */
+  .admin-panel {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 24px; margin-bottom: 26px; display: none;
+  }
+  .admin-panel.open { display: block; }
+  .admin-panel h3 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 16px; }
+  .field-row { display: flex; flex-direction: column; gap: 5px; margin-bottom: 13px; }
+  .field-row label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.4px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .field-row input, .field-row textarea {
+    padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 9px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--bg);
+    color: var(--ink); outline: none; transition: border-color 0.2s; resize: vertical;
+  }
+  .field-row input:focus, .field-row textarea:focus { border-color: var(--navy); }
+  .field-row input::placeholder, .field-row textarea::placeholder { color: var(--muted); }
+  .btn-post {
+    width: 100%; padding: 12px; background: var(--navy); color: #fff;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s; margin-top: 4px;
+  }
+  .btn-post:hover { background: var(--accent-hover); }
+
+  /* Feed */
+  .feed { display: flex; flex-direction: column; gap: 14px; }
+  .video-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 22px; display: flex;
+    align-items: flex-start; gap: 18px; text-decoration: none; color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    animation: fadeUp 0.35s ease both;
+  }
+  .video-card:hover {
+    transform: translateY(-2px); box-shadow: 0 8px 28px rgba(27,58,107,0.10);
+    border-color: #b0bcd4;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .thumb {
+    flex-shrink: 0; width: 126px; height: 74px;
+    border-radius: 8px; overflow: hidden; position: relative; background: var(--border);
+  }
+  .thumb.shorts-thumb { width: 56px; height: 94px; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb-placeholder {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #dde2ec 0%, #c8d0e0 100%);
+  }
+  .thumb-placeholder svg { width: 24px; height: 24px; opacity: 0.32; }
+  .play-icon {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.30); opacity: 0; transition: opacity 0.2s; border-radius: 8px;
+  }
+  .video-card:hover .play-icon { opacity: 1; }
+  .play-icon svg { width: 24px; height: 24px; fill: #fff; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
+  .badge-new {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    background: var(--new-badge); color: #fff; padding: 2px 7px; border-radius: 4px;
+  }
+  .badge-short {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    background: #6d28d9; color: #fff; padding: 2px 7px; border-radius: 4px;
+  }
+  .card-date { font-size: 12px; color: var(--muted); }
+  .card-title {
+    font-size: 15px; font-weight: 600; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card-desc {
+    margin-top: 4px; font-size: 13px; color: var(--muted); line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .card-link {
+    display: inline-flex; align-items: center; gap: 4px; margin-top: 9px;
+    font-size: 13px; font-weight: 600; color: var(--navy); text-decoration: none;
+  }
+  .card-link svg { width: 13px; height: 13px; }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state svg { width: 44px; height: 44px; margin-bottom: 14px; opacity: 0.28; display: block; margin-left: auto; margin-right: auto; }
+  .empty-state p { font-size: 15px; }
+
+  /* ══ ABOUT ══ */
+  .about-wrap { max-width: 660px; margin: 0 auto; padding: 48px 24px 80px; }
+  .about-avatar {
+    width: 84px; height: 84px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, #2d5fa8 100%);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+  }
+  .about-avatar svg { width: 38px; height: 38px; fill: rgba(255,255,255,0.85); }
+  .about-wrap h2 { font-family: 'DM Serif Display', serif; font-size: 30px; margin-bottom: 4px; }
+  .about-handle { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+  .about-bio {
+    font-size: 15px; line-height: 1.75; color: var(--ink);
+    margin-bottom: 28px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px;
+  }
+  .about-links { display: flex; flex-direction: column; gap: 12px; }
+  .about-link-card {
+    display: flex; align-items: center; gap: 14px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; padding: 15px 18px;
+    text-decoration: none; color: var(--ink);
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+  }
+  .about-link-card:hover {
+    transform: translateY(-2px); box-shadow: 0 6px 22px rgba(27,58,107,0.10);
+    border-color: #b0bcd4;
+  }
+  .about-link-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .about-link-icon.yt  { background: #ff0000; }
+  .about-link-icon.yt  svg { width: 20px; height: 20px; fill: #fff; }
+  .about-link-icon.web { background: var(--navy); }
+  .about-link-icon.web svg { width: 18px; height: 18px; fill: #fff; }
+  .about-link-text strong { display: block; font-size: 14px; font-weight: 600; }
+  .about-link-text span   { font-size: 12px; color: var(--muted); }
+  .about-link-arrow { margin-left: auto; color: var(--muted); }
+  .about-link-arrow svg { width: 16px; height: 16px; }
+
+  /* ══ TOAST ══ */
+  #toast {
+    position: fixed; bottom: 26px; right: 26px; background: var(--ink); color: #fff;
+    padding: 13px 18px; border-radius: 12px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18); transform: translateY(80px); opacity: 0;
+    transition: transform 0.35s cubic-bezier(.22,1,.36,1), opacity 0.3s;
+    z-index: 999; max-width: 300px; pointer-events: none;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast .toast-title { font-weight: 700; margin-bottom: 2px; }
+  #toast .toast-sub   { opacity: 0.65; font-size: 12.5px; }
+
+  /* ══ FOOTER ══ */
+  footer {
+    border-top: 1px solid var(--border); text-align: center;
+    padding: 20px 24px; font-size: 13px; color: var(--muted); margin-top: auto;
+  }
+
+  /* ══ RESPONSIVE ══ */
+  @media (max-width: 600px) {
+    .header-inner { padding: 0 14px; height: 52px; }
+    .logo { margin-right: 12px; }
+    .logo-text { display: none; }
+    .nav-btn { padding: 7px 10px; font-size: 13px; }
+    .sub-count { display: none; }
+    .page-wrap { padding: 22px 16px 60px; }
+    .thumb { width: 100px; height: 60px; }
+    .thumb.shorts-thumb { width: 46px; height: 78px; }
+    .login-card { padding: 28px 20px; }
+    .about-wrap { padding: 30px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header id="mainHeader" style="display:none">
+  <div class="header-inner">
+    <a class="logo" href="#" onclick="goPage('videos');return false;">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <span class="logo-text">YT Updates</span>
+    </a>
+    <nav>
+      <button class="nav-btn active" id="nav-videos" onclick="goPage('videos')">🎬 Videos</button>
+      <button class="nav-btn"        id="nav-shorts" onclick="goPage('shorts')">⚡ Shorts</button>
+      <button class="nav-btn"        id="nav-about"  onclick="goPage('about')">👤 About</button>
+    </nav>
+    <div class="header-right">
+      <span class="sub-count" id="subCount">0 subscribers</span>
+      <button class="btn-logout" id="logoutBtn" onclick="logout()">Log out</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ LOGIN PAGE ═══════════ -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span>YT Updates</span>
+      </div>
+      <h2>Welcome back</h2>
+      <p>Sign in to post videos and manage your channel updates.</p>
+
+      <div class="login-tabs">
+        <button class="login-tab active" id="tab-signin" onclick="switchLoginTab('signin')">Sign In</button>
+        <button class="login-tab"        id="tab-signup" onclick="switchLoginTab('signup')">Sign Up</button>
+      </div>
+
+      <div id="form-signin">
+        <div class="login-field">
+          <label>Username</label>
+          <input type="text" id="siUser" placeholder="e.g. NotStellerXD" />
+        </div>
+        <div class="login-field">
+          <label>Password</label>
+          <input type="password" id="siPass" placeholder="••••••••" />
+        </div>
+        <button class="btn-login" onclick="signIn()">Sign In</button>
+      </div>
+
+      <div id="form-signup" style="display:none">
+        <div class="login-field">
+          <label>Username</label>
+          <input type="text" id="suUser" placeholder="Choose a username" />
+        </div>
+        <div class="login-field">
+          <label>Password</label>
+          <input type="password" id="suPass" placeholder="Create a password (min 4 chars)" />
+        </div>
+        <button class="btn-login" onclick="signUp()">Create Account</button>
+      </div>
+
+      <div class="subscribe-section">
+        <h4>🔔 Get notified on new uploads</h4>
+        <div class="sub-row">
+          <input type="email" id="emailInput" placeholder="your@email.com" />
+          <button class="btn-sub" onclick="subscribe()">Notify Me</button>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px;">🔒 No spam, ever. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ VIDEOS PAGE ═══════════ -->
+<div class="page" id="page-videos">
+  <div class="page-wrap">
+    <div class="page-header">
+      <div>
+        <h2>Videos</h2>
+        <p>All the latest uploads from NotStellerXD</p>
+      </div>
+      <button class="btn-admin" id="adminToggleVideos" onclick="toggleAdmin('videos')" style="display:none">⚙ Post Video</button>
+    </div>
+
+    <div class="admin-panel" id="adminVideos">
+      <h3>Post a New Video</h3>
+      <div class="field-row">
+        <label>Video Title *</label>
+        <input type="text" id="vidTitle" placeholder="e.g. My Best Vlog Yet" />
+      </div>
+      <div class="field-row">
+        <label>Video URL *</label>
+        <input type="url" id="vidUrl" placeholder="https://youtube.com/watch?v=..." />
+      </div>
+      <div class="field-row">
+        <label>Thumbnail URL (optional)</label>
+        <input type="url" id="vidThumb" placeholder="https://..." />
+      </div>
+      <div class="field-row">
+        <label>Short Description</label>
+        <textarea id="vidDesc" rows="2" placeholder="What's this video about?"></textarea>
+      </div>
+      <button class="btn-post" onclick="postContent('video')">📤 Publish Video</button>
+    </div>
+
+    <div class="feed" id="feed-videos">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <p>No videos yet. Check back soon!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SHORTS PAGE ═══════════ -->
+<div class="page" id="page-shorts">
+  <div class="page-wrap">
+    <div class="page-header">
+      <div>
+        <h2>Shorts</h2>
+        <p>Quick clips and short-form content</p>
+      </div>
+      <button class="btn-admin" id="adminToggleShorts" onclick="toggleAdmin('shorts')" style="display:none">⚙ Post Short</button>
+    </div>
+
+    <div class="admin-panel" id="adminShorts">
+      <h3>Post a New Short</h3>
+      <div class="field-row">
+        <label>Short Title *</label>
+        <input type="text" id="shortTitle" placeholder="e.g. 60-second tip" />
+      </div>
+      <div class="field-row">
+        <label>Short URL *</label>
+        <input type="url" id="shortUrl" placeholder="https://youtube.com/shorts/..." />
+      </div>
+      <div class="field-row">
+        <label>Thumbnail URL (optional)</label>
+        <input type="url" id="shortThumb" placeholder="https://..." />
+      </div>
+      <div class="field-row">
+        <label>Short Description</label>
+        <textarea id="shortDesc" rows="2" placeholder="What's this short about?"></textarea>
+      </div>
+      <button class="btn-post" onclick="postContent('short')">📤 Publish Short</button>
+    </div>
+
+    <div class="feed" id="feed-shorts">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <p>No shorts yet. Check back soon!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ABOUT PAGE ═══════════ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-avatar">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+    </div>
+    <h2>NotStellerXD</h2>
+    <p class="about-handle">YouTube Creator · @NotStellerXD</p>
+
+    <div class="about-bio">
+      Hey! I'm <strong>NotStellerXD</strong> — a content creator sharing videos and shorts on YouTube. Subscribe with your email on the login page to get instant notifications whenever something new drops. New content comes out regularly, so stay tuned!
+    </div>
+
+    <div class="about-links">
+
+      <!-- ★ YouTube Channel link — fill in href below when ready ★ -->
+      <a class="about-link-card" href="https://www.youtube.com/notstellerxd/" target="_blank" rel="noopener">
+        <div class="about-link-icon yt">
+          <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.8 5 12 5 12 5s-4.8 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.3.9C6.8 19 12 19 12 19s4.8 0 7-.1c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM10 15V9l6 3-6 3z"/></svg>
+        </div>
+        <div class="about-link-text">
+          <strong>YouTube Channel</strong>
+          <span>Watch all my videos on YouTube</span>
+        </div>
+        <div class="about-link-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
+
+      <a class="about-link-card" href="#" onclick="goPage('videos');return false;">
+        <div class="about-link-icon web">
+          <svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        </div>
+        <div class="about-link-text">
+          <strong>YT Updates</strong>
+          <span>Browse videos &amp; shorts here</span>
+        </div>
+        <div class="about-link-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>Built by NotStellerXD · YT Updates</footer>
+
+<!-- TOAST -->
+<div id="toast">
+  <div class="toast-title" id="toastTitle"></div>
+  <div class="toast-sub"   id="toastSub"></div>
+</div>
+
+<script>
+// ── STATE ──
+let videos      = JSON.parse(localStorage.getItem('ytu_videos') || '[]');
+let shorts      = JSON.parse(localStorage.getItem('ytu_shorts') || '[]');
+let subscribers = JSON.parse(localStorage.getItem('ytu_subs')   || '[]');
+let users       = JSON.parse(localStorage.getItem('ytu_users')  || '[]');
+let currentUser = localStorage.getItem('ytu_session')           || null;
+
+// ── ROUTING ──
+function goPage(name) {
+  if (name !== 'login' && !currentUser) { goPage('login'); return; }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const nb = document.getElementById('nav-' + name);
+  if (nb) nb.classList.add('active');
+  document.getElementById('mainHeader').style.display = (name === 'login') ? 'none' : '';
+}
+
+// ── AUTH ──
+function switchLoginTab(tab) {
+  ['signin','signup'].forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('form-' + t).style.display = (t === tab) ? '' : 'none';
+  });
+}
+
+function signIn() {
+  const user = document.getElementById('siUser').value.trim();
+  const pass = document.getElementById('siPass').value;
+  if (!user || !pass) { showToast('⚠️ Missing fields','Enter username and password.'); return; }
+  const found = users.find(u => u.username.toLowerCase() === user.toLowerCase() && u.password === pass);
+  if (!found) { showToast('❌ Wrong credentials','Username or password incorrect.'); return; }
+  currentUser = found.username;
+  localStorage.setItem('ytu_session', currentUser);
+  afterLogin();
+}
+
+function signUp() {
+  const user = document.getElementById('suUser').value.trim();
+  const pass = document.getElementById('suPass').value;
+  if (!user || !pass) { showToast('⚠️ Missing fields','Enter username and password.'); return; }
+  if (pass.length < 4) { showToast('⚠️ Too short','Password needs at least 4 characters.'); return; }
+  if (users.find(u => u.username.toLowerCase() === user.toLowerCase())) {
+    showToast('⚠️ Username taken','Try a different username.'); return;
+  }
+  users.push({ username: user, password: pass });
+  localStorage.setItem('ytu_users', JSON.stringify(users));
+  currentUser = user;
+  localStorage.setItem('ytu_session', currentUser);
+  afterLogin();
+}
+
+function afterLogin() {
+  document.getElementById('adminToggleVideos').style.display = '';
+  document.getElementById('adminToggleShorts').style.display = '';
+  document.getElementById('logoutBtn').style.display = '';
+  updateSubCount();
+  renderFeed('video');
+  renderFeed('short');
+  goPage('videos');
+  showToast('👋 Welcome, ' + currentUser + '!', 'You\'re signed in.');
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('ytu_session');
+  document.getElementById('adminToggleVideos').style.display = 'none';
+  document.getElementById('adminToggleShorts').style.display = 'none';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('adminVideos').classList.remove('open');
+  document.getElementById('adminShorts').classList.remove('open');
+  goPage('login');
+  showToast('👋 Signed out','See you next time!');
+}
+
+// ── SUBSCRIBE ──
+function subscribe() {
+  const input = document.getElementById('emailInput');
+  const email = input.value.trim().toLowerCase();
+  if (!email || !email.includes('@')) { showToast('⚠️ Invalid Email','Enter a valid email address.'); return; }
+  if (subscribers.includes(email)) { showToast('✅ Already subscribed!','You\'re on the list.'); return; }
+  subscribers.push(email);
+  localStorage.setItem('ytu_subs', JSON.stringify(subscribers));
+  input.value = '';
+  updateSubCount();
+  if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+  showToast('🎉 Subscribed!','You\'ll be notified on new uploads.');
+}
+
+function updateSubCount() {
+  const n = subscribers.length;
+  document.getElementById('subCount').textContent = n === 1 ? '1 subscriber' : n + ' subscribers';
+}
+
+// ── ADMIN TOGGLE ──
+function toggleAdmin(type) {
+  document.getElementById('admin' + (type === 'videos' ? 'Videos' : 'Shorts')).classList.toggle('open');
+}
+
+// ── POST CONTENT ──
+function postContent(type) {
+  const isVid = type === 'video';
+  const p     = isVid ? 'vid' : 'short';
+  const title = document.getElementById(p + 'Title').value.trim();
+  const url   = document.getElementById(p + 'Url').value.trim();
+  const thumb = document.getElementById(p + 'Thumb').value.trim();
+  const desc  = document.getElementById(p + 'Desc').value.trim();
+  if (!title) { showToast('⚠️ Missing Title','Add a title.'); return; }
+  if (!url)   { showToast('⚠️ Missing URL','Add a URL.'); return; }
+  const item = { id: Date.now(), title, url, thumb, desc, ts: Date.now(), type };
+  if (isVid) { videos.push(item); localStorage.setItem('ytu_videos', JSON.stringify(videos)); }
+  else       { shorts.push(item); localStorage.setItem('ytu_shorts', JSON.stringify(shorts)); }
+  [p+'Title', p+'Url', p+'Thumb', p+'Desc'].forEach(id => document.getElementById(id).value = '');
+  toggleAdmin(isVid ? 'videos' : 'shorts');
+  renderFeed(type);
+  notifySubscribers(item);
+  showToast('✅ Published!', '"' + title + '" is now live.');
+}
+
+// ── RENDER ──
+function renderFeed(type) {
+  const isVid  = type === 'video';
+  const items  = isVid ? videos : shorts;
+  const feedEl = document.getElementById(isVid ? 'feed-videos' : 'feed-shorts');
+  feedEl.innerHTML = '';
+
+  if (!items.length) {
+    feedEl.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><p>No ' + (isVid ? 'videos' : 'shorts') + ' yet. Check back soon!</p></div>';
+    return;
+  }
+
+  items.slice().reverse().forEach((v, i) => {
+    const isNew = (Date.now() - v.ts) < 172800000;
+    const date  = new Date(v.ts).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+    const ph    = '<div class="thumb-placeholder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>';
+    const img   = v.thumb ? '<img src="' + escH(v.thumb) + '" alt="" onerror="this.parentElement.innerHTML=\'' + ph.replace(/'/g,"\\'") + '\'">' : ph;
+
+    const card = document.createElement('a');
+    card.href = v.url; card.target = '_blank'; card.rel = 'noopener';
+    card.className = 'video-card';
+    card.style.animationDelay = (i * 55) + 'ms';
+    card.innerHTML =
+      '<div class="thumb' + (!isVid ? ' shorts-thumb' : '') + '">' + img +
+      '<div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>' +
+      '<div class="card-body">' +
+        '<div class="card-meta">' +
+          (isNew ? '<span class="badge-new">New</span>' : '') +
+          (!isVid ? '<span class="badge-short">Short</span>' : '') +
+          '<span class="card-date">' + date + '</span>' +
+        '</div>' +
+        '<div class="card-title">' + escH(v.title) + '</div>' +
+        (v.desc ? '<div class="card-desc">' + escH(v.desc) + '</div>' : '') +
+        '<span class="card-link">Watch ' + (isVid ? 'video' : 'short') +
+          ' <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6l6 6-6 6"/></svg></span>' +
+      '</div>';
+    feedEl.appendChild(card);
+  });
+}
+
+// ── NOTIFY ──
+function notifySubscribers(item) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const n = new Notification('🎬 New ' + (item.type === 'short' ? 'Short' : 'Video') + ': ' + item.title, {
+    body: item.desc || 'Click to watch now!',
+    icon: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=64'
+  });
+  n.onclick = () => window.open(item.url, '_blank');
+}
+
+// ── TOAST ──
+function showToast(title, sub) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent   = sub;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function escH(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ──
+(function() {
+  if (currentUser) { afterLogin(); }
+  else { goPage('login'); }
+  const last = parseInt(localStorage.getItem('ytu_lastSeen') || '0');
+  [...videos, ...shorts].filter(v => v.ts > last).forEach(v => notifySubscribers(v));
+  localStorage.setItem('ytu_lastSeen', Date.now());
+})();
+</script>
+</body>
+</html>
